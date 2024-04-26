@@ -1,0 +1,115 @@
+.App {
+  text-align: center;
+}
+
+.form {
+  margin-left: 20rem;
+  margin-right: 20rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background: rgb(223, 219, 219);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: inline-block;
+  width: 120px; 
+  text-align: right;
+  margin-right: 60px;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='date'],
+select,
+textarea {
+  width: 200px; 
+  outline: none;
+  background: white;
+  border: 1px solid grey;
+  height: 25px;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.buttons {
+  margin-left: 10rem;
+}
+
+button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button[type='clear'] {
+  background-color: #dc3545;
+}
+
+button[type='clear']:hover {
+  background-color: #c82333;
+}
+
+.clear-btn {
+  margin-left: 10px;
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  .form {
+    margin: 1rem auto;
+    padding: 1rem;
+    max-width: 80%;
+  }
+
+  label {
+    width: 100%;
+    text-align: center;
+    margin-right: 0;
+  }
+
+  input {
+    width: calc(100% - 24px); 
+    margin-right: 0;
+  }
+
+  .buttons {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1019px) {
+  .form {
+    margin: 1rem auto;
+    padding: 1rem;
+    max-width: 80%; 
+  }
+
+  label {
+    margin-right: 0.5rem; 
+  }
+
+  button {
+    margin-right: 5px; 
+  }
+
+  .clear-btn {
+    margin-left: 5px; 
+  }
+}
