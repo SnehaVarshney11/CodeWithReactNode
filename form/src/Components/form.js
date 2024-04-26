@@ -31,27 +31,28 @@ const Form = () => {
         <form className='form' id='formId' onSubmit={handleSubmit}>
             <div className="form-group">
                 <label htmlFor='firstname'>First Name</label>
-                <input type='text' name='firstname' onChange={handleChange} />
+                <input type='text' name='firstname' onChange={handleChange} required/>
             </div>
             <div className="form-group">
                 <label htmlFor='lastname'>Last Name</label>
-                <input type='text' name='lastname' onChange={handleChange} />
+                <input type='text' name='lastname' onChange={handleChange} required/>
             </div>
             <div className="form-group">
                 <label htmlFor='email'>Email</label>
-                <input type='email' name='email' onChange={handleChange} />
+                <input type='email' name='email' onChange={handleChange} required/>
             </div>
             <div className="form-group">
                 <label htmlFor='phone'>Phone</label>
-                <input type='tel' name='phone' onChange={handleChange} />
+                <input type='tel' name='phone' onChange={handleChange} required/>
             </div>
             <div className="form-group">
                 <label htmlFor='dob'>Date Of Birth</label>
-                <input type='date' name='dob' onChange={handleChange} />
+                <input type='date' name='dob' onChange={handleChange} required/>
             </div>
             <div className="form-group">
                 <label htmlFor="gender">Gender</label>
-                <select id="gender" name="gender" required>
+                <select id="gender" name="gender" onChange={handleChange} required>
+                    <option value="">Select</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="other">Other</option>
@@ -66,7 +67,6 @@ const Form = () => {
                 <button type='clear' className="clear-btn" onClick={handleClear}>Clear</button>
             </div>      
         </form>
-        {message && <p>{message}</p>}
         </>
     );
 };
