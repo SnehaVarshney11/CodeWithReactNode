@@ -58,10 +58,6 @@ const Form = () => {
                     <option value="other">Other</option>
                 </select>
             </div>
-            <div className="form-group">
-                <label htmlFor="gender">Address</label>
-                <textarea id='text'></textarea>
-            </div>
             <div className='buttons'>
                 <button type='submit'>Submit</button>
                 <button type='clear' className="clear-btn" onClick={handleClear}>Clear</button>
