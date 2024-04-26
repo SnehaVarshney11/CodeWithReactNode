@@ -28,7 +28,7 @@ const formSchema = new mongoose.Schema({
         enum: ['male', 'female', 'other']
     },
     address: {
-        type: String 
+        type: String,
     }
 })
 
