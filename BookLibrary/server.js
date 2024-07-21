@@ -3,11 +3,16 @@ import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
 import path from "path";
-import Book from "./BookSchema";
+import { fileURLToPath } from "url";
+import Book from "./BookSchema.js";
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Get the directory name from the file URL
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const upload = multer({
   dest: path.join(__dirname, "uploads"),
@@ -22,6 +27,9 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 app.post("/books", upload.single("image"), async (req, res) => {
+  console.log("Request received:", req.body);
+  console.log("Uploaded file:", req.file);
+
   const { title, description } = req.body;
   const image = req.file?.path;
 
@@ -30,7 +38,6 @@ app.post("/books", upload.single("image"), async (req, res) => {
   }
 
   try {
-    //const newBook = new Book({ title, image, description });
     const newBook = new Book({ title, image, description });
     await newBook.save();
     console.log("Book saved in DB", newBook);
