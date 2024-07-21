@@ -55,6 +55,16 @@ app.post("/books", upload.single("image"), async (req, res) => {
   }
 });
 
+app.get("/books", async (req, res) => {
+  try {
+    const getBook = await Book.find();
+    res.status(200).json(getBook);
+  } catch (error) {
+    console.log("Error in getting book", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = 5000;
