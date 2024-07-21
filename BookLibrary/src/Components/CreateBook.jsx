@@ -11,13 +11,19 @@ function CreateBook({ isOpen, onClose, onBookAdded }) {
   const [description, setDescription] = useState("");
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     const formData = new FormData();
     formData.append("title", title);
     formData.append("image", image);
     formData.append("description", description);
 
+    // Log FormData contents
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
     try {
-      const res = await axios.post("/books", formData, {
+      const res = await axios.post("http://localhost:5000/books", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -70,7 +76,7 @@ function CreateBook({ isOpen, onClose, onBookAdded }) {
           <button type="submit" className="bg-blue-400">
             Ok
           </button>
-          <button type="submit" className="bg-red-400">
+          <button type="button" onClick={onClose} className="bg-red-400">
             Cancel
           </button>
         </div>
