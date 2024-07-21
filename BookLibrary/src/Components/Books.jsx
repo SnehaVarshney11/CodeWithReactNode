@@ -1,9 +1,23 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import CreateBook from "./CreateBook";
 
 function Books() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [books, setBooks] = useState([]);
+
+  //After reloading the page, books will be show
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/books");
+        setBooks(res.data);
+      } catch (error) {
+        console.error("Error fetching books:", error);
+      }
+    };
+    fetchBooks();
+  }, []);
 
   const handleAddBook = (newBook) => {
     console.log("New Book Added:", newBook);
@@ -31,7 +45,7 @@ function Books() {
                 <img
                   src={`http://localhost:5000${book.image}`}
                   alt={book.title}
-                  className="mt-2 w-full h-48 object-cover p-2 border border-blue-400"
+                  className="mt-2 h-48 object-contain"
                 />
                 <p className="mt-2">{book.description}</p>
               </div>
