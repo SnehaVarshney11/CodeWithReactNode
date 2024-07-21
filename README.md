@@ -1,6 +1,6 @@
 # CodeWithReactNode
 ## How to create React + Node + Tailwind CSS Application -
-1. npm create vite@latest react-app --template react 
+1. npx create vite@latest react-app --template react 
 2. cd react-app
 3. npm i -D tailwindcss postcss autoprefixer
 4. npx tailwindcss init -p
