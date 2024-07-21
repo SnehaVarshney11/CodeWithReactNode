@@ -1,4 +1,5 @@
 import bodyParser from "body-parser";
+import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
@@ -7,6 +8,8 @@ import { fileURLToPath } from "url";
 import Book from "./BookSchema.js";
 
 const app = express();
+
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -38,7 +41,11 @@ app.post("/books", upload.single("image"), async (req, res) => {
   }
 
   try {
-    const newBook = new Book({ title, image, description });
+    const newBook = new Book({
+      title,
+      image: `/uploads/${path.basename(image)}`,
+      description,
+    });
     await newBook.save();
     console.log("Book saved in DB", newBook);
     res.status(201).json(newBook);
