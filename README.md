@@ -26,3 +26,8 @@
     @tailwind utilities;
     ```
 7. Run -> npm run dev
+8. Add NodeJs -> 
+* Install express -> npm i express, 
+* Install body-parser -> npm i body-parser
+* Install mongoose -> npm i mongoose
+9. Add server.js file
