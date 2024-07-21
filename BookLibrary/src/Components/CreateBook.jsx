@@ -17,11 +17,6 @@ function CreateBook({ isOpen, onClose, onBookAdded }) {
     formData.append("image", image);
     formData.append("description", description);
 
-    // Log FormData contents
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
     try {
       const res = await axios.post("http://localhost:5000/books", formData, {
         headers: {
@@ -30,6 +25,8 @@ function CreateBook({ isOpen, onClose, onBookAdded }) {
       });
       onBookAdded(res.data);
       console.log("Book is Created", res.data);
+      setTitle("");
+      setDescription("");
       onClose();
     } catch (error) {
       console.error("Error adding book:", error);
@@ -55,7 +52,7 @@ function CreateBook({ isOpen, onClose, onBookAdded }) {
         </div>
 
         <div className="space-x-2">
-          <label>Image:</label>
+          <label>Cover Photo:</label>
           <input
             type="file"
             onChange={(e) => setImage(e.target.files[0])}
