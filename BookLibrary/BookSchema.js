@@ -9,6 +9,10 @@ const BookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  pdf: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
     required: true,
