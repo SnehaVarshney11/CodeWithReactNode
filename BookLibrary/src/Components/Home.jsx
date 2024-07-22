@@ -15,9 +15,11 @@ function Home() {
         </h1>
         <h3>Explore a world of books and stories.</h3>
         <p className="text-xs">Grab A Book To Read</p>
-        <button className="bg-blue-400 text-white px-4 py-2 rounded">
-          Explore Book
-        </button>
+        <a href="/books">
+          <button className="bg-blue-400 text-white px-4 py-2 rounded">
+            Explore Book
+          </button>
+        </a>
       </div>
       <div className="absolute inset-x-0 bottom-0 bg-white py-8 text-center">
         <h2 className="text-xl font-semibold">About Us</h2>
