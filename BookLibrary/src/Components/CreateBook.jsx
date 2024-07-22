@@ -8,6 +8,7 @@ Modal.setAppElement("#root");
 function CreateBook({ isOpen, onClose, onBookAdded }) {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
+  const [pdf, setPdf] = useState(null);
   const [description, setDescription] = useState("");
 
   const handleSubmit = async (e) => {
@@ -15,6 +16,7 @@ function CreateBook({ isOpen, onClose, onBookAdded }) {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("image", image);
+    formData.append("pdf", pdf);
     formData.append("description", description);
 
     try {
@@ -56,6 +58,16 @@ function CreateBook({ isOpen, onClose, onBookAdded }) {
           <input
             type="file"
             onChange={(e) => setImage(e.target.files[0])}
+            required
+          />
+        </div>
+
+        <div className="space-x-2">
+          <label>PDF File:</label>
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => setPdf(e.target.files[0])}
             required
           />
         </div>
