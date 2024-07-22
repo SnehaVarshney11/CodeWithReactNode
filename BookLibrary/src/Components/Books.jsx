@@ -43,6 +43,33 @@ function Books() {
       : description;
   };
 
+  const handleDelete = async (id) => {
+    console.log("Deleting book with ID:", id);
+
+    if (!id) {
+      console.error("ID is not defined");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:5000/books/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Response was not ok");
+      }
+
+      const data = await response.json();
+      console.log(data.message);
+
+      // Remove the deleted book from state
+      setBooks((prevBooks) => prevBooks.filter((book) => book._id !== id));
+    } catch (error) {
+      console.error("Error deleting book:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <CreateBook
@@ -74,6 +101,13 @@ function Books() {
                     className="text-blue-500 underline mt-2"
                   >
                     View PDF
+                  </a>
+                  <a
+                    href="#"
+                    onClick={() => handleDelete(book._id)}
+                    className="text-red-500 underline ml-2 cursor-pointer"
+                  >
+                    Delete PDF
                   </a>
                 </div>
                 <p className="mt-2 text-justify tracking-tighter">
