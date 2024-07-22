@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import fs from "fs";
+import { unlink } from "fs/promises";
 import mongoose from "mongoose";
 import multer from "multer";
 import path from "path";
@@ -88,6 +89,42 @@ app.get("/books", async (req, res) => {
     res.status(200).json(getBook);
   } catch (error) {
     console.log("Error in getting book", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete("/books/:id", async (req, res) => {
+  try {
+    const bookId = req.params.id;
+    console.log("Id: ", bookId);
+
+    if (!bookId) {
+      return res.status(400).json({ error: "ID is required" });
+    }
+
+    // Find the book to get the file paths
+    const book = await Book.findById(bookId);
+
+    if (!book) {
+      return res.status(400).json({ error: "Data Not Found" });
+    }
+
+    // Delete the book
+    await Book.findByIdAndDelete(bookId);
+
+    // Remove the files from the filesystem
+    const imagePath = path.join(__dirname, book.image);
+    const pdfPath = path.join(__dirname, book.pdf);
+
+    await Promise.all([
+      book.image ? unlink(imagePath) : Promise.resolve(),
+      book.pdf ? unlink(pdfPath) : Promise.resolve(),
+    ]);
+
+    console.log("Data Deleted");
+    res.status(200).json({ message: "Book deleted" });
+  } catch (error) {
+    console.error("Error deleting book:", error);
     res.status(500).json({ error: error.message });
   }
 });
