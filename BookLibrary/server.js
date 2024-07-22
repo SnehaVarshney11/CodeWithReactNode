@@ -129,6 +129,45 @@ app.delete("/books/:id", async (req, res) => {
   }
 });
 
+// Download PDF
+app.get("/books/download/:id", async (req, res) => {
+  try {
+    const bookId = req.params.id;
+    console.log("Download request pdf ID: ", bookId);
+
+    if (!bookId) {
+      return res.status(400).json({ error: "ID is required" });
+    }
+
+    //Find book to get filepath
+    const book = await Book.findById(bookId);
+
+    if (!book || !book.pdf) {
+      return res.status(404).json({ error: "File not found" });
+    }
+
+    //File Path
+    const filePath = path.join(
+      __dirname,
+      "uploads/pdfs",
+      path.basename(book.pdf)
+    );
+    console.log("File Path:", filePath);
+
+    res.download(filePath, (err) => {
+      if (err) {
+        console.error("Error sending file:", err);
+        res.status(500).json({ error: "Error sending file" });
+      } else {
+        console.log("PDF Downloaded");
+      }
+    });
+  } catch (error) {
+    console.error("Error downloading book:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = 5000;
