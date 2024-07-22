@@ -103,6 +103,18 @@ function Books() {
                     View PDF
                   </a>
                   <a
+                    href={`http://localhost:5000/books/download/${book._id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline mt-2"
+                  >
+                    <img
+                      src="/Images/download.svg"
+                      alt="Download"
+                      className="w-5 mb-1"
+                    />
+                  </a>
+                  <a
                     href="#"
                     onClick={() => handleDelete(book._id)}
                     className="text-red-500 underline ml-2 cursor-pointer"
