@@ -5,8 +5,9 @@ import CreateBook from "./CreateBook";
 function Books() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [books, setBooks] = useState([]);
+  const [expanded, setExpanded] = useState({});
 
-  //After reloading the page, books will be show
+  // After reloading the page, books will be shown
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -22,6 +23,24 @@ function Books() {
   const handleAddBook = (newBook) => {
     console.log("New Book Added:", newBook);
     setBooks((prevBooks) => [...prevBooks, newBook]);
+  };
+
+  const toggleDescription = (bookId) => {
+    setExpanded((prevState) => ({
+      ...prevState,
+      [bookId]: !prevState[bookId],
+    }));
+  };
+
+  const truncateDescription = (description, isExpanded) => {
+    const wordLimit = 30;
+    const words = description.split(" ");
+    if (isExpanded) {
+      return description;
+    }
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "... "
+      : description;
   };
 
   return (
@@ -41,13 +60,33 @@ function Books() {
                 key={book._id}
                 className="border border-gray-300 rounded-md shadow-md p-6"
               >
-                <h3 className="text-xl font-semibold">{book.title}</h3>
-                <img
-                  src={`http://localhost:5000${book.image}`}
-                  alt={book.title}
-                  className="mt-2 h-48 object-contain"
-                />
-                <p className="mt-2">{book.description}</p>
+                <h3 className="text-xl font-bold uppercase">{book.title}</h3>
+                <div className="flex items-end space-x-2">
+                  <img
+                    src={`http://localhost:5000${book.image}`}
+                    alt={book.title}
+                    className="mt-2 h-48 object-contain"
+                  />
+                  <a
+                    href={`http://localhost:5000${book.pdf}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline mt-2"
+                  >
+                    View PDF
+                  </a>
+                </div>
+                <p className="mt-2 text-justify tracking-tighter">
+                  {truncateDescription(book.description, expanded[book._id])}
+                  {book.description.split(" ").length > 50 && (
+                    <span
+                      onClick={() => toggleDescription(book._id)}
+                      className="text-blue-500 underline cursor-pointer"
+                    >
+                      {expanded[book._id] ? " ...less" : "see more"}
+                    </span>
+                  )}
+                </p>
               </div>
             ))}
           </div>
