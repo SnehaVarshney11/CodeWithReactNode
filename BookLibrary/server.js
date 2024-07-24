@@ -168,6 +168,28 @@ app.get("/books/download/:id", async (req, res) => {
   }
 });
 
+//Search Book by title
+app.get("/books/search", async (req, res) => {
+  try {
+    const { title } = req.query;
+    if (!title) {
+      return res
+        .status(400)
+        .json({ error: "Title query parameter is required" });
+    }
+
+    // Use a case-insensitive search
+    const books = await Book.find({
+      title: { $regex: new RegExp(title, "i") },
+    });
+
+    res.status(200).json(books);
+  } catch (error) {
+    console.error("Error searching books:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = 5000;
