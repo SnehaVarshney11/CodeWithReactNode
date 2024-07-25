@@ -11,23 +11,29 @@ import Book from "./BookSchema.js";
 
 const app = express();
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors()); //protect with cross origin -> cors error
+app.use(bodyParser.json()); //parse the body of incoming req and ensure data availabilty in req.body -> { "name": "Sneha", "role": "Engineer" }
+app.use(bodyParser.urlencoded({ extended: true })); //parse URL encoded from data -> name=Sneha&role=Engineer
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url); // Convert the URL of the current module to a file path
+const __dirname = path.dirname(__filename); // Get the directory name of the current module
 
-// Ensure the uploads directories exist
+// Define uploads directories
 const imageUploadPath = path.join(__dirname, "uploads/images");
 const pdfUploadPath = path.join(__dirname, "uploads/pdfs");
 
 fs.mkdirSync(imageUploadPath, { recursive: true });
 fs.mkdirSync(pdfUploadPath, { recursive: true });
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve static files from the "uploads" directory
+
 const storage = multer.diskStorage({
+  // multer.diskStorage() -> configures how files should be stored on disk. It takes an object with two properties: destination and filename
   destination: (req, file, cb) => {
+    //cb is callback function to specify destination folder
     if (file.mimetype === "application/pdf") {
+      //MIME type is a way to identify the type of file being uploaded.
+      //If the file is a PDF, call the callback function cb with null as the first argument (indicating no error) and pdfUploadPath as the second argument (the path where PDF files should be stored)
       cb(null, pdfUploadPath);
     } else {
       cb(null, imageUploadPath);
@@ -48,6 +54,7 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
+//POST API for uploading pdf, images, title, description
 app.post(
   "/books",
   upload.fields([
@@ -58,9 +65,9 @@ app.post(
     console.log("Request received:", req.body);
     console.log("Uploaded files:", req.files);
 
-    const { title, description } = req.body;
-    const image = req.files.image?.[0].path;
-    const pdf = req.files.pdf?.[0].path;
+    const { title, description } = req.body; // Extract title, description from req body
+    const image = req.files.image[0].path; // Extract image from path, when using Multer with upload.fields(), the uploaded files are provided as arrays
+    const pdf = req.files.pdf[0].path; // Extract pdf from path, when using Multer with upload.fields(), the uploaded files are provided as arrays
 
     if (!title || !description || !image || !pdf) {
       return res.status(400).json({ error: "All fields are required" });
@@ -83,6 +90,7 @@ app.post(
   }
 );
 
+// GET API -> for display the books
 app.get("/books", async (req, res) => {
   try {
     const getBook = await Book.find();
@@ -93,6 +101,7 @@ app.get("/books", async (req, res) => {
   }
 });
 
+// DELETE API -> delete book by ID
 app.delete("/books/:id", async (req, res) => {
   try {
     const bookId = req.params.id;
@@ -129,7 +138,7 @@ app.delete("/books/:id", async (req, res) => {
   }
 });
 
-// Download PDF
+// Download PDF by ID
 app.get("/books/download/:id", async (req, res) => {
   try {
     const bookId = req.params.id;
@@ -171,7 +180,8 @@ app.get("/books/download/:id", async (req, res) => {
 //Search Book by title
 app.get("/books/search", async (req, res) => {
   try {
-    const { title } = req.query;
+    // Why req.query -> When a client sends a GET request with query parameters, the URL might look like this: /books/search?title=JavaScript
+    const { title } = req.query; //Extract title query from the URL
     if (!title) {
       return res
         .status(400)
@@ -189,8 +199,6 @@ app.get("/books/search", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = 5000;
 app.listen(PORT, () => {
