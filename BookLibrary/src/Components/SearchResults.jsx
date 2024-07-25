@@ -68,7 +68,6 @@ const SearchResults = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h2>{title ? `Search Results for "${title}"` : "All Books"}</h2>
       <div className="mt-4 w-full">
         {books.length === 0 ? (
           <p className="text-center">No books available</p>
