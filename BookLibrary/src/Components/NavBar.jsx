@@ -4,14 +4,14 @@ import "../index.css";
 
 function NavBar() {
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Hook replace by useHistory, navigate back to previous pages we will use the React useNavigation Hook
 
   const handleSearch = (e) => {
-    e.preventDefault();
+    e.preventDefault(); //When a form is submitted, the default behavior is for the page to reload. By using e.preventDefault(), you can prevent this
     if (searchQuery) {
       navigate(`/books/search?title=${searchQuery}`);
     } else {
-      navigate(`/books/search`); // Navigate to /books/search without query
+      navigate(`/books`);
     }
   };
 
